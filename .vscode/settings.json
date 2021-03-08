@@ -1,0 +1,6 @@
+{
+  "eslint.workingDirectories": [
+    "clients/main/"
+  ],
+  "css.styleSheets": [],
+}

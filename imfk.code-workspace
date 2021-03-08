@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "name": "Main FE",
+      "path": "./clients/main/"
+    },
+    {
+      "name": "Main BE",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "tailwindCSS.emmetCompletions": true
+  }
+}
