@@ -1,6 +1,31 @@
 <template>
   <fieldset class="mb-2">
     <legend class="font-mono mb-1">
+      Параметри графіка
+    </legend>
+    <div class="flex flex-wrap space md:-mx-1">
+      <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">
+        <input
+          v-model.number="plotParams[0]"
+          class="border-3 border-gray-500 rounded w-full p-1"
+          type="number"
+          step="1"
+        >
+      </div>
+
+      <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">
+        <input
+          v-model.number="plotParams[1]"
+          class="border-3 border-gray-500 rounded w-full p-1"
+          type="number"
+          step="0.1"
+        >
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="mb-2">
+    <legend class="font-mono mb-1">
       Параметри функції
     </legend>
     <ul class="list-lowerlatin list-inside">
@@ -48,6 +73,10 @@ export default {
       type: Array,
       default: () => []
     },
+    modelPlotParams: {
+      type: Array,
+      default: () => []
+    },
     selectedMf: {
       type: Object,
       required: true,
@@ -55,20 +84,23 @@ export default {
     }
   },
 
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'update:modelPlotParams'],
 
   setup (props, { emit }) {
     const pm = ref(0)
     const params = useModelWrapper(props, emit)
+    const plotParams = useModelWrapper(props, emit, 'modelPlotParams')
 
     const initparams = () => {
       const dp = defaultParams[props.selectedMf.code]
 
       if (dp) {
-        params.value = dp
+        params.value = [...dp]
       } else {
         params.value = Array(props.selectedMf.params_count).fill(0)
       }
+
+      plotParams.value = [100, 1]
 
       nextTick(() => {
         pm.value = props.selectedMf.params_count
@@ -81,6 +113,7 @@ export default {
 
     return {
       params,
+      plotParams,
       pm
     }
   }

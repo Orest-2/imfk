@@ -65,9 +65,9 @@ func (t *Sigmoidal) validateAndSetParams(params []float64) error {
 
 	lib.UnpackFloat64(params, &a, &b)
 
-	if !(a < b) {
-		return fmt.Errorf("має виконуватися співвідношенням a < b: (a=%v, b=%v)", a, b)
-	}
+	// if !(a < b) {
+	// 	return fmt.Errorf("має виконуватися співвідношенням a < b: (a=%v, b=%v)", a, b)
+	// }
 
 	t.a, t.b = a, b
 

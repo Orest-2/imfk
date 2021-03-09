@@ -99,7 +99,7 @@ export default {
       const dp = defaultParams[props.selectedMf.code]
 
       if (dp) {
-        params.value = dp
+        params.value = [...dp]
       } else {
         params.value = Array(props.selectedMf.params_count).fill(0).map(() => [0, 0])
       }

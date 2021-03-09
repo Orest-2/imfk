@@ -43,6 +43,7 @@ func Make3DPlot(c *gin.Context) {
 	res := make3DPlotResponse{
 		make3DPlotRequest: make3DPlotRequest{
 			MembershipFuncID: json.MembershipFuncID,
+			PlotParams:       json.PlotParams,
 		},
 	}
 

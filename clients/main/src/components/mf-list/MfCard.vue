@@ -42,6 +42,7 @@
         <mf-params
           v-if="type==='2d'"
           v-model="params"
+          v-model:modelPlotParams="plotParams"
           :selected-mf="selectedMf"
         />
 

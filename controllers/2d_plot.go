@@ -5,6 +5,7 @@ import (
 	"math"
 	"net/http"
 
+	"github.com/Orest-2/imfk/lib"
 	"github.com/Orest-2/imfk/lib/mfs"
 	"github.com/Orest-2/imfk/models"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ import (
 type make2DPlotRequest struct {
 	MembershipFuncID int       `json:"membership_func_id" binding:"required"`
 	FuncParams       []float64 `json:"func_params" binding:"required"`
+	PlotParams       []float64 `json:"plot_params"`
 }
 
 type make2DPlotResponse struct {
@@ -44,7 +46,7 @@ func Make2DPlot(c *gin.Context) {
 		},
 	}
 
-	res.X, res.Y, res.make2DPlotRequest.FuncParams, err = get2DPlotData(mf, json.FuncParams, nil)
+	res.X, res.Y, res.make2DPlotRequest.FuncParams, err = get2DPlotData(mf, json.FuncParams, nil, json.PlotParams)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -60,7 +62,7 @@ func Make2DPlot(c *gin.Context) {
 }
 
 func get2DPlotData(
-	mf models.MembershipFunc, params []float64, inData []float64,
+	mf models.MembershipFunc, params []float64, inData []float64, plotParams []float64,
 ) (
 	[]float64, []float64, []float64, error,
 ) {
@@ -78,15 +80,31 @@ func get2DPlotData(
 		}
 
 		x := []float64{}
+		fromX := 0.0
+		toX := 100.0
+		step := 1.0
 
-		fp := p[i]
-		fpabs := math.Abs(fp)
-		lp := p[len(p)-1]
+		if plotParams != nil && len(plotParams) >= 2 {
 
-		fromX := fp - fpabs
-		toX := lp + fpabs
-		for i := fromX; i <= toX; i++ {
-			x = append(x, i)
+			lib.UnpackFloat64(plotParams, &toX, &step)
+
+			if step == 0 {
+				step = 1.0
+			}
+
+		} else {
+
+			fp := p[i]
+			fpabs := math.Abs(fp)
+			lp := p[len(p)-1]
+
+			fromX = fp - fpabs
+			toX = lp + fpabs
+
+		}
+
+		for i := fromX; i <= toX/step; i++ {
+			x = append(x, i*step)
 		}
 
 		return x
