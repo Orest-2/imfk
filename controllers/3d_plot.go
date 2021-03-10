@@ -80,6 +80,10 @@ func get3DPlotData(
 		lib.UnpackFloat64(plotParams, &m, &p)
 	}
 
+	if p <= 0 {
+		p = m / 100
+	}
+
 	s := int(m / p)
 
 	for i := 0; i <= s; i++ {

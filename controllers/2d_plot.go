@@ -74,9 +74,7 @@ func get2DPlotData(
 	getVectorX := func(p []float64, i int) []float64 {
 
 		if inData != nil {
-
 			return inData
-
 		}
 
 		x := []float64{}
@@ -87,9 +85,8 @@ func get2DPlotData(
 		if plotParams != nil && len(plotParams) >= 2 {
 
 			lib.UnpackFloat64(plotParams, &toX, &step)
-
-			if step == 0 {
-				step = 1.0
+			if step <= 0 {
+				step = toX / 100
 			}
 
 		} else {
