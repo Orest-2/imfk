@@ -43,6 +43,7 @@ func Make2DPlot(c *gin.Context) {
 	res := make2DPlotResponse{
 		make2DPlotRequest: make2DPlotRequest{
 			MembershipFuncID: json.MembershipFuncID,
+			PlotParams:       json.PlotParams,
 		},
 	}
 
@@ -62,7 +63,7 @@ func Make2DPlot(c *gin.Context) {
 }
 
 func get2DPlotData(
-	mf models.MembershipFunc, params []float64, inData []float64, plotParams []float64,
+	mf models.MembershipFunc, params, inData, plotParams []float64,
 ) (
 	[]float64, []float64, []float64, error,
 ) {

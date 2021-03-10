@@ -53,33 +53,10 @@
           :selected-mf="selectedMf"
         />
 
-        <fieldset class="mb-2">
-          <legend class="font-mono mb-1">
-            Введіть інформацію, що потрібно формалізувати
-          </legend>
-          <div class="flex flex-wrap space md:-mx-1">
-            <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">
-              <input
-                type="text"
-                class="border-3 border-gray-500 rounded w-full p-1"
-              >
-            </div>
-
-            <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">
-              <input
-                type="text"
-                class="border-3 border-gray-500 rounded w-full p-1"
-              >
-            </div>
-
-            <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">
-              <input
-                type="text"
-                class="border-3 border-gray-500 rounded w-full p-1"
-              >
-            </div>
-          </div>
-        </fieldset>
+        <mf-eval-data
+          v-if="type==='2d'"
+          v-model="data"
+        />
       </div>
     </div>
   </div>
@@ -94,9 +71,10 @@ import MfParams from './MfParams.vue'
 import MfSelector from './MfSelector.vue'
 import DangerAlert from '../alerts/DangerAlert.vue'
 import Mf3DParams from './Mf3DParams.vue'
+import MfEvalData from './MfEvalData.vue'
 
 export default {
-  components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams },
+  components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData },
 
   props: {
     showDelBtn: Boolean,
@@ -112,6 +90,7 @@ export default {
     const alerts = ref(null)
     const selectedMf = ref(null)
     const params = ref([])
+    const data = ref([0])
     const plotParams = ref([])
     const plotTraces = ref([{ x: [], y: [] }])
 
@@ -151,6 +130,7 @@ export default {
       params,
       plotParams,
       plotTraces,
+      data,
       alerts
     }
   }

@@ -63,7 +63,7 @@ func Make3DPlot(c *gin.Context) {
 }
 
 func get3DPlotData(
-	mf models.MembershipFunc, funcParams [][]float64, inData [][]float64, plotParams []float64,
+	mf models.MembershipFunc, funcParams, inData [][]float64, plotParams []float64,
 ) (
 	[]float64, []float64, [][]float64, [][]float64, error,
 ) {
