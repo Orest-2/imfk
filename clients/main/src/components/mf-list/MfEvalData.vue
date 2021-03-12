@@ -46,7 +46,7 @@
     <div class="flex py-2">
       <button
         class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
-        @click="addMf"
+        @click="$emit('eval')"
       >
         Виконати
       </button>
@@ -66,7 +66,7 @@ export default {
     }
   },
 
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'eval'],
 
   setup (props, { emit }) {
     const data = useModelWrapper(props, emit)

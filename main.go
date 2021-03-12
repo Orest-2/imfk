@@ -43,8 +43,10 @@ func main() {
 		// settings
 		v1.GET("/settings", controllers.GetSettings)
 		//mf
-		v1.POST("/mf/plot/2d", controllers.Make2DPlot)
-		v1.POST("/mf/plot/3d", controllers.Make3DPlot)
+		v1.POST("/mf/2d/plot", controllers.Make2DPlot)
+		v1.POST("/mf/3d/plot", controllers.Make3DPlot)
+		//mf
+		v1.POST("/mf/2d/eval", controllers.Eval2D)
 	}
 
 	mime.AddExtensionType(".js", "text/javascript")

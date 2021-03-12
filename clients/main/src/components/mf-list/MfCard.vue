@@ -56,7 +56,12 @@
         <mf-eval-data
           v-if="type==='2d'"
           v-model="data"
+          @eval="evalData"
         />
+
+        <div v-if="result.length">
+          {{ `${result.join(' | ')}` }}
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +95,7 @@ export default {
     const alerts = ref(null)
     const selectedMf = ref(null)
     const params = ref([])
+    const result = ref([])
     const data = ref([0])
     const plotParams = ref([])
     const plotTraces = ref([{ x: [], y: [] }])
@@ -98,7 +104,7 @@ export default {
 
     const makePlot = ({ payload }) => {
       axios.post(
-        `http://localhost:1447/api/v1/mf/plot/${selectedMf.value.type}`,
+        `http://localhost:1447/api/v1/mf/${selectedMf.value.type}/plot`,
         payload
       )
         .then(({ data }) => {
@@ -108,6 +114,27 @@ export default {
         })
         .catch(err => {
           plotTraces.value = [{ x: [], y: [] }]
+          alerts?.value?.responseErrorHandler(err)
+        })
+    }
+
+    const evalData = () => {
+      const payload = {
+        membership_func_id: selectedMf.value.id,
+        func_params: params.value,
+        in_data: data.value
+      }
+
+      axios.post(
+        `http://localhost:1447/api/v1/mf/${selectedMf.value.type}/eval`,
+        payload
+      )
+        .then(({ data }) => {
+          result.value = [...data.data.result]
+
+          alerts?.value?.clearErrors()
+        })
+        .catch(err => {
           alerts?.value?.responseErrorHandler(err)
         })
     }
@@ -131,6 +158,8 @@ export default {
       plotParams,
       plotTraces,
       data,
+      evalData,
+      result,
       alerts
     }
   }
