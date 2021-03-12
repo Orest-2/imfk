@@ -1,5 +1,5 @@
 <template>
-  <div class="divide-y-2 divide-trueGray-500 mb-2rem">
+  <div class="divide-y-2 divide-true-gray-500 mb-2rem">
     <mf-box
       v-for="(n, i) in mfcnt"
       :key="n"
@@ -10,7 +10,7 @@
 
     <div class="flex p-15px">
       <button
-        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-trueGray-100 bg-trueGray-200"
+        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
         @click="addMf"
       >
         + Добавити нову функцію належності

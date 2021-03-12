@@ -19,7 +19,7 @@
 
     <div class="flex items-center w-full my-1">
       <button
-        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-trueGray-100 bg-trueGray-200"
+        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
         @click="data.pop()"
       >
         -
@@ -36,7 +36,7 @@
         </div>
       </div>
       <button
-        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-trueGray-100 bg-trueGray-200"
+        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
         @click="data.push(0)"
       >
         +
@@ -45,7 +45,7 @@
 
     <div class="flex py-2">
       <button
-        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-trueGray-100 bg-trueGray-200"
+        class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
         @click="addMf"
       >
         Виконати

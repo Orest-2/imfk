@@ -7,11 +7,11 @@
         </p>
       </div>
 
-      <div class="font-mono flex justify-center divide-x-2 divide-black border-b-2 p-15px border-trueGray-500">
+      <div class="font-mono flex justify-center divide-x-2 divide-black border-b-2 p-15px border-true-gray-500">
         <div
           class="px-15px"
           role="button"
-          :class="{ 'text-trueGray-400 hover:text-black': type !== '2d' }"
+          :class="{ 'text-true-gray-400 hover:text-black': type !== '2d' }"
           @click="type = '2d'"
         >
           Однієї змінної
@@ -20,7 +20,7 @@
         <div
           role="button"
           class="px-15px"
-          :class="{ 'text-trueGray-400 hover:text-black': type !== '3d' }"
+          :class="{ 'text-true-gray-400 hover:text-black': type !== '3d' }"
           @click="type = '3d'"
         >
           Багатьох змінних
