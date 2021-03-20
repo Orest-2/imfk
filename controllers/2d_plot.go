@@ -83,7 +83,7 @@ func get2DPlotData(
 		toX := 100.0
 		step := 1.0
 
-		if plotParams != nil && len(plotParams) >= 2 {
+		if len(plotParams) >= 2 {
 
 			lib.UnpackFloat64(plotParams, &toX, &step)
 			if step <= 0 {

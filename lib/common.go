@@ -30,7 +30,7 @@ func Vector2Matrix(in []float64, sliceLen int) [][]float64 {
 		return out
 	}
 
-	for i := 0; i <= sliceLen; i++ {
+	for i := 0; i < len(in)/sliceLen; i++ {
 
 		t := in[i*sliceLen : (i+1)*sliceLen]
 		out = append(out, t)

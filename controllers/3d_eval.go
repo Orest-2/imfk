@@ -9,21 +9,21 @@ import (
 	"gorm.io/gorm"
 )
 
-type eval2DRequest struct {
-	MembershipFuncID int       `json:"membership_func_id" binding:"required"`
-	FuncParams       []float64 `json:"func_params" binding:"required"`
-	InData           []float64 `json:"in_data" binding:"required"`
+type eval3DRequest struct {
+	MembershipFuncID int         `json:"membership_func_id" binding:"required"`
+	FuncParams       [][]float64 `json:"func_params" binding:"required"`
+	InData           [][]float64 `json:"in_data" binding:"required"`
 }
 
-type eval2DResponse struct {
-	eval2DRequest
-	InData []float64 `json:"in_data"`
-	Result []float64 `json:"result"`
+type eval3DResponse struct {
+	eval3DRequest
+	InData [][]float64 `json:"in_data"`
+	Result []float64   `json:"result"`
 }
 
-// Eval2D ...
-func Eval2D(c *gin.Context) {
-	json := eval2DRequest{}
+// Eval3D ...
+func Eval3D(c *gin.Context) {
+	json := eval3DRequest{}
 	mf := models.MembershipFunc{}
 
 	if err := c.ShouldBindJSON(&json); err != nil {
@@ -37,13 +37,14 @@ func Eval2D(c *gin.Context) {
 		return
 	}
 
-	res := eval2DResponse{
-		eval2DRequest: eval2DRequest{
+	res := eval3DResponse{
+		eval3DRequest: eval3DRequest{
 			MembershipFuncID: json.MembershipFuncID,
 		},
+		InData: json.InData,
 	}
 
-	res.InData, res.Result, res.eval2DRequest.FuncParams, err = get2DPlotData(mf, json.FuncParams, json.InData, nil)
+	_, _, res.Result, _, res.eval3DRequest.FuncParams, err = get3DPlotData(mf, json.FuncParams, json.InData, nil)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -47,7 +47,7 @@ func Make3DPlot(c *gin.Context) {
 		},
 	}
 
-	res.X, res.Y, res.Z, res.make3DPlotRequest.FuncParams, err = get3DPlotData(mf, json.FuncParams, nil, json.PlotParams)
+	res.X, res.Y, _, res.Z, res.make3DPlotRequest.FuncParams, err = get3DPlotData(mf, json.FuncParams, nil, json.PlotParams)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -65,7 +65,7 @@ func Make3DPlot(c *gin.Context) {
 func get3DPlotData(
 	mf models.MembershipFunc, funcParams, inData [][]float64, plotParams []float64,
 ) (
-	[]float64, []float64, [][]float64, [][]float64, error,
+	[]float64, []float64, []float64, [][]float64, [][]float64, error,
 ) {
 	vx := []float64{}
 	vy := []float64{}
@@ -75,26 +75,31 @@ func get3DPlotData(
 
 	p := 0.1
 	m := 10.0
+	s := 1
 
-	if plotParams != nil && len(plotParams) >= 2 {
+	if len(plotParams) >= 2 {
 		lib.UnpackFloat64(plotParams, &m, &p)
-	}
 
-	if p <= 0 {
-		p = m / 100
-	}
+		if p <= 0 {
+			p = m / 100
+		}
 
-	s := int(m / p)
+		s = int(m / p)
 
-	for i := 0; i <= s; i++ {
+		for i := 0; i <= s; i++ {
 
-		k := float64(i)
-		vx = append(vx, k*p)
-		vy = append(vy, k*p)
+			k := float64(i)
+			vx = append(vx, k*p)
+			vy = append(vy, k*p)
 
+		}
 	}
 
 	getInData := func() [][]float64 {
+
+		if inData != nil {
+			return inData
+		}
 
 		res := [][]float64{}
 
@@ -122,7 +127,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewCone(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -140,7 +145,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewPyramidal(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -158,7 +163,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewTrapezoidalPyramidal(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -176,7 +181,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewGeneralizedSigmoid(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -194,7 +199,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewBellShaped3D(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -212,7 +217,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewGauss3D(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -230,7 +235,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewHyperboloid(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -248,7 +253,7 @@ func get3DPlotData(
 
 		tmf, err := mfs.NewEllipsoid(funcParams)
 		if err != nil {
-			return vx, vy, mz, mfParams, err
+			return vx, vy, vz, mz, mfParams, err
 		}
 
 		mfParams = tmf.GetParams()
@@ -264,5 +269,5 @@ func get3DPlotData(
 
 	}
 
-	return vx, vy, mz, mfParams, nil
+	return vx, vy, vz, mz, mfParams, nil
 }
