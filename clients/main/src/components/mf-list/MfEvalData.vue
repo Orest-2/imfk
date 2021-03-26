@@ -57,6 +57,7 @@
 <script>
 import { computed, onMounted } from 'vue'
 import { useModelWrapper } from '../../utils/modelWrapper'
+import { qs } from '../../utils/query'
 
 export default {
   props: {
@@ -88,7 +89,11 @@ export default {
     })
 
     onMounted(() => {
-      data.value = [0]
+      if (qs.params.get('test') === '1') {
+        data.value = [0.415, 0.350, 0.613, 0.283, 0.927]
+      } else {
+        data.value = [0]
+      }
     })
 
     return {

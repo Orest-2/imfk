@@ -53,18 +53,18 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 import { useModelWrapper } from '../../utils/modelWrapper'
 
 const defaultParams = {
-  trimf: [20, 50, 80],
-  trapmf: [25, 40, 60, 75],
-  szmf: [25, 75],
-  hzmf: [25, 75],
-  zsigmf: [-0.2, 50],
-  ssigmf: [0.2, 50],
-  zlinemf: [25, 75],
-  slinemf: [25, 75],
-  hsmf: [25, 75],
-  ssmf: [25, 75],
-  gbellmf: [20, 5, 50],
-  gaussmf: [10, 50]
+  trimf: [2, 5, 8],
+  trapmf: [2, 4, 6, 7.5],
+  szmf: [2.5, 7.5],
+  hzmf: [2.5, 7.5],
+  zsigmf: [-0.2, 5],
+  ssigmf: [0.2, 5],
+  zlinemf: [2.5, 7.5],
+  slinemf: [2.5, 7.5],
+  hsmf: [2.5, 75],
+  ssmf: [2.5, 7.5],
+  gbellmf: [2, 0.5, 5],
+  gaussmf: [1, 5]
 }
 
 export default {
@@ -100,7 +100,7 @@ export default {
         params.value = Array(props.selectedMf.params_count).fill(0)
       }
 
-      plotParams.value = [100, 1]
+      plotParams.value = [10, 0.1]
 
       nextTick(() => {
         pm.value = props.selectedMf.params_count

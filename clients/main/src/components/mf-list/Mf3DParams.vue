@@ -33,20 +33,16 @@
         <div
           v-for="(n, i) in pm"
           :key="n+i"
-          class="flex items-center w-full md:w-1/4 md:mx-1 md:mb-0 mb-1"
+          class="flex items-center w-full md:mx-1 mb-1"
         >
           <li class="mr-1" />
           <input
-            v-model.number="params[i][0]"
+            v-for="(__, j) in params[i]"
+            :key="`${i}+${j}`"
+            v-model.number="params[i][j]"
             type="number"
             step="1"
-            class="border-3 border-gray-500 rounded w-full p-1 mx-1"
-          >
-          <input
-            v-model.number="params[i][1]"
-            type="number"
-            step="1"
-            class="border-3 border-gray-500 rounded w-full p-1 mx-1"
+            class="border-3 border-gray-500 rounded md:w-1/4 p-1 mx-1"
           >
         </div>
       </div>

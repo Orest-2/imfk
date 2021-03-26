@@ -59,6 +59,12 @@
           @eval="evalData"
         />
 
+        <mf-3-d-eval-data
+          v-if="type==='3d'"
+          v-model="data"
+          @eval="evalData"
+        />
+
         <div v-if="result.length">
           {{ `${result.join(' | ')}` }}
         </div>
@@ -77,9 +83,10 @@ import MfSelector from './MfSelector.vue'
 import DangerAlert from '../alerts/DangerAlert.vue'
 import Mf3DParams from './Mf3DParams.vue'
 import MfEvalData from './MfEvalData.vue'
+import Mf3DEvalData from './Mf3DEvalData.vue'
 
 export default {
-  components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData },
+  components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData, Mf3DEvalData },
 
   props: {
     showDelBtn: Boolean,
@@ -91,7 +98,7 @@ export default {
 
   emits: ['remove'],
 
-  setup () {
+  setup (props) {
     const alerts = ref(null)
     const selectedMf = ref(null)
     const params = ref([])
@@ -119,10 +126,15 @@ export default {
     }
 
     const evalData = () => {
+      const transpose = matrix => matrix.reduce(
+        ($, row) => row.map((_, i) => [...($[i] || []), row[i]]),
+        []
+      )
+
       const payload = {
         membership_func_id: selectedMf.value.id,
         func_params: params.value,
-        in_data: data.value
+        in_data: props.type === '3d' ? transpose(data.value) : data.value
       }
 
       axios.post(
@@ -130,7 +142,7 @@ export default {
         payload
       )
         .then(({ data }) => {
-          result.value = [...data.data.result]
+          result.value = [...data.data.result].map(e => e.toFixed(3))
 
           alerts?.value?.clearErrors()
         })
@@ -150,6 +162,27 @@ export default {
         debounce(() => makePlot({ payload }), 1000)
       },
       { deep: true }
+    )
+
+    watch(
+      data,
+      (nv, ov) => {
+        if (props.type === '3d') {
+          const cnt = nv.length || 1
+          const l = ov.length || 1
+
+          params.value.forEach((row, i) => {
+            const l = row.length || 2
+
+            if (l < cnt) {
+              row.push(...Array(cnt - l).fill(0))
+            }
+            if (l > cnt) {
+              params.value[i] = row.slice(0, cnt)
+            }
+          })
+        }
+      }
     )
 
     return {
