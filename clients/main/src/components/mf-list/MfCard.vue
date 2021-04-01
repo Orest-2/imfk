@@ -26,7 +26,7 @@
 
     <div
       v-if="selectedMf"
-      class="flex lg:flex-row flex-col-reverse"
+      class="flex flex-wrap lg:flex-row flex-col-reverse"
     >
       <polot
         :traces="plotTraces"
@@ -64,11 +64,9 @@
           v-model="data"
           @eval="evalData"
         />
-
-        <div v-if="result.length">
-          {{ `${result.join(' | ')}` }}
-        </div>
       </div>
+
+      <mf-result :result="result" />
     </div>
   </div>
 </template>
@@ -84,9 +82,10 @@ import DangerAlert from '../alerts/DangerAlert.vue'
 import Mf3DParams from './Mf3DParams.vue'
 import MfEvalData from './MfEvalData.vue'
 import Mf3DEvalData from './Mf3DEvalData.vue'
+import MfResult from './MfResult.vue'
 
 export default {
-  components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData, Mf3DEvalData },
+  components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData, Mf3DEvalData, MfResult },
 
   props: {
     showDelBtn: Boolean,
@@ -160,16 +159,17 @@ export default {
           plot_params: plotParams.value
         }
         debounce(() => makePlot({ payload }), 1000)
+
+        result.value = []
       },
       { deep: true }
     )
 
     watch(
       data,
-      (nv, ov) => {
+      (nv) => {
         if (props.type === '3d') {
           const cnt = nv.length || 1
-          const l = ov.length || 1
 
           params.value.forEach((row, i) => {
             const l = row.length || 2
@@ -182,7 +182,8 @@ export default {
             }
           })
         }
-      }
+      },
+      { deep: true }
     )
 
     return {
