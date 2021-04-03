@@ -4,7 +4,7 @@ application:
   project: "imfk"
   organization: "QoveryCommunity"
 routers:
-- name: "main-imfk"
+- name: "imfk"
   routes:
   - application_name: "imfk"
     paths:

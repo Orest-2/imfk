@@ -1,4 +1,4 @@
-const ApiHost = import.meta.env.APP_API_HOST || 'http://localhost:1447'
+const ApiHost = import.meta.env.QOVERY_ROUTER_IMFK_URL || 'http://localhost:1447'
 
 export const urls = {
   settings: `${ApiHost}/api/v1/settings`,
