@@ -11,7 +11,7 @@ var DB *gorm.DB
 
 // ConnectDataBase ...
 func ConnectDataBase() {
-	database, err := gorm.Open(sqlite.Open("./db/imfk.db"), &gorm.Config{
+	database, err := gorm.Open(sqlite.Open("./imfk.db"), &gorm.Config{
 		PrepareStmt: true,
 		Logger:      logger.Default.LogMode(logger.Info),
 	})
