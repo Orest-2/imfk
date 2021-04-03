@@ -16,16 +16,13 @@ RUN go build -tags=jsoniter -o ./app ./main.go
 
 FROM node:lts-alpine as client-build-stage
 
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-
 WORKDIR /app
 
-COPY clients/main/package.json .
-COPY clients/main/package-lock.json .
+COPY /clients/main/package.json .
+COPY /clients/main/package-lock.json .
 RUN npm install
 
-COPY clients/main .
-
+COPY /clients/main .
 RUN npm run build
 
 FROM alpine:latest
@@ -35,7 +32,7 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN mkdir -p /app
 WORKDIR /app
 COPY --from=builder /app .
-COPY --from=client-build-stage /app/dist /clients/main/dist
+COPY --from=client-build-stage /app/dist/ /clients/main/dist
 
 EXPOSE 1447
 
