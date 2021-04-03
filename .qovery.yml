@@ -1,0 +1,11 @@
+---
+application:
+  name: "imfk"
+  project: "imfk"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-imfk"
+  routes:
+  - application_name: "imfk"
+    paths:
+    - "/*"
