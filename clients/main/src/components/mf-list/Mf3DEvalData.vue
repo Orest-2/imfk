@@ -156,7 +156,7 @@ export default {
           [0.78, 0.40, 0.54, 0.85, 0.82]
         ]
       } else {
-        data.value = [[0, 0]]
+        data.value = [[0, 0], [0, 0]]
       }
     })
 

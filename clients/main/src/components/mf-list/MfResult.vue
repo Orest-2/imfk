@@ -7,17 +7,26 @@
       Результат
     </div>
     <div class="text-xl">
-      {{ `${result.join(' | ')}` }}
+      {{ `${resf.join(' | ')}` }}
     </div>
   </div>
 </template>
 
 <script>
+import { computed } from 'vue'
 export default {
   props: {
     result: {
       type: Array,
       default: () => []
+    }
+  },
+
+  setup (props) {
+    const resf = computed(() => props.result.map(e => e.toFixed(4)))
+
+    return {
+      resf
     }
   }
 }

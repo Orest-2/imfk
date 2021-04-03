@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import axios from 'axios'
 import { createDebounce } from '../../utils/debounce'
 import Polot from '../plot/Polot.vue'
@@ -141,7 +141,7 @@ export default {
         payload
       )
         .then(({ data }) => {
-          result.value = [...data.data.result].map(e => e.toFixed(3))
+          result.value = [...data.data.result]
 
           alerts?.value?.clearErrors()
         })
@@ -165,24 +165,34 @@ export default {
       { deep: true }
     )
 
-    watch(
-      data,
-      (nv) => {
-        if (props.type === '3d') {
-          const cnt = nv.length || 1
+    const upadteParams = () => {
+      if (props.type === '3d') {
+        nextTick(() => {
+          const cnt = data.value.length || 1
 
           params.value.forEach((row, i) => {
             const l = row.length || 2
 
             if (l < cnt) {
-              row.push(...Array(cnt - l).fill(0))
+              params.value[i] = [...params.value[i], ...Array(cnt - l).fill(0)]
+              console.log(params.value[i])
             }
             if (l > cnt) {
               params.value[i] = row.slice(0, cnt)
             }
           })
-        }
-      },
+        })
+      }
+    }
+
+    watch(
+      data,
+      upadteParams,
+      { deep: true }
+    )
+    watch(
+      selectedMf,
+      upadteParams,
       { deep: true }
     )
 

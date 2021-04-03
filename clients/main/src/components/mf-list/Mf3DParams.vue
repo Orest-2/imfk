@@ -31,7 +31,7 @@
     <ul class="list-lowerlatin list-inside">
       <div class="flex flex-wrap space md:-mx-1">
         <div
-          v-for="(n, i) in pm"
+          v-for="(n, i) in params.length"
           :key="n+i"
           class="flex items-center w-full md:mx-1 mb-1"
         >
@@ -51,18 +51,18 @@
 </template>
 
 <script>
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useModelWrapper } from '../../utils/modelWrapper'
 
 const defaultParams = {
-  conemf: [[5, 5], [4, 4]],
-  pyrammf: [[5, 5], [4, 4]],
-  trappyrammf: [[5, 5], [0.2, 1], [4, 4]],
-  gsigmf: [[5, 5], [0, 1]],
-  gbell3dmf: [[5, 5], [2, 2], [2, 2]],
-  gauss3dmf: [[5, 5], [2, 2]],
-  hyperbolmf: [[5, 5], [2, 2]],
-  ellipsmf: [[5, 5], [4, 4]]
+  conemf: [[0.5, 0.5], [0.4, 0.4]],
+  pyrammf: [[0.5, 0.5], [0.4, 0.4]],
+  trappyrammf: [[0.5, 0.5], [0.2, 1], [0.4, 0.4]],
+  gsigmf: [[0.5, 0.5], [0, 10]],
+  gbell3dmf: [[0.5, 0.5], [0.2, 0.2], [2.5, 2.5]],
+  gauss3dmf: [[0.5, 0.5], [0.25, 0.25]],
+  hyperbolmf: [[0.5, 0.5], [0.25, 0.25]],
+  ellipsmf: [[0.5, 0.5], [0.4, 0.4]]
 }
 
 export default {
@@ -85,13 +85,10 @@ export default {
   emits: ['update:modelValue', 'update:modelPlotParams'],
 
   setup (props, { emit }) {
-    const pm = ref(0)
     const params = useModelWrapper(props, emit)
     const plotParams = useModelWrapper(props, emit, 'modelPlotParams')
 
     const initparams = () => {
-      pm.value = 0
-
       const dp = defaultParams[props.selectedMf.code]
 
       if (dp) {
@@ -100,11 +97,7 @@ export default {
         params.value = Array(props.selectedMf.params_count).fill(0).map(() => [0, 0])
       }
 
-      plotParams.value = [10, 0.1]
-
-      nextTick(() => {
-        pm.value = props.selectedMf.params_count
-      })
+      plotParams.value = [1, 0.01]
     }
 
     watch(() => props.selectedMf, initparams)
@@ -113,8 +106,7 @@ export default {
 
     return {
       params,
-      plotParams,
-      pm
+      plotParams
     }
   }
 }
