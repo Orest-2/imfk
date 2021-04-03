@@ -12,7 +12,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY . .
-RUN go build -o ./app ./main.go
+RUN go build -o ./app ./main.go -tags=jsoniter
 
 FROM alpine:latest
 
@@ -22,6 +22,6 @@ RUN mkdir -p /app
 WORKDIR /app
 COPY --from=builder /app .
 
-EXPOSE 8080
+EXPOSE 1447
 
 ENTRYPOINT ["./app"]

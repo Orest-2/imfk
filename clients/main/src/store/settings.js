@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { urls } from '../constants/urls'
 
 export const settings = {
   namespaced: true,
@@ -25,7 +26,7 @@ export const settings = {
 
   actions: {
     fetchSettings ({ commit }) {
-      axios.get('http://localhost:1447/api/v1/settings')
+      axios.get(urls.settings)
         .then(({ data }) => {
           commit('setMembershipFuncs', data.data.membership_funcs)
         })

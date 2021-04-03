@@ -83,6 +83,7 @@ import Mf3DParams from './Mf3DParams.vue'
 import MfEvalData from './MfEvalData.vue'
 import Mf3DEvalData from './Mf3DEvalData.vue'
 import MfResult from './MfResult.vue'
+import { urls } from '../../constants/urls'
 
 export default {
   components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData, Mf3DEvalData, MfResult },
@@ -110,7 +111,7 @@ export default {
 
     const makePlot = ({ payload }) => {
       axios.post(
-        `http://localhost:1447/api/v1/mf/${selectedMf.value.type}/plot`,
+        urls.plot.replace(':type', selectedMf.value.type),
         payload
       )
         .then(({ data }) => {
@@ -137,7 +138,7 @@ export default {
       }
 
       axios.post(
-        `http://localhost:1447/api/v1/mf/${selectedMf.value.type}/eval`,
+        urls.eval.replace(':type', selectedMf.value.type),
         payload
       )
         .then(({ data }) => {
