@@ -20,7 +20,7 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
-COPY clients/main/package*.json .
+COPY package*.json .
 RUN npm install
 
 COPY clients/main .
