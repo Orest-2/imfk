@@ -26,6 +26,8 @@ RUN npm install
 
 COPY clients/main .
 
+RUN npm run build
+
 FROM alpine:latest
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
