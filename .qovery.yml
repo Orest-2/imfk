@@ -7,7 +7,7 @@ routers:
 - name: "imfk"
   custom_domains:
   - branch: master
-    domain: imfk.qovery.io
+    domain: imfk.acme.com
   routes:
   - application_name: "imfk"
     paths:
