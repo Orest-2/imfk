@@ -5,6 +5,9 @@ application:
   organization: "QoveryCommunity"
 routers:
 - name: "imfk"
+  custom_domains:
+  - branch: master
+    domain: imfk.qovery.io
   routes:
   - application_name: "imfk"
     paths:
