@@ -24,27 +24,27 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { useModelWrapper } from '../../utils/modelWrapper'
 
 export default {
   props: {
-    modelValue: {
-      type: Object,
-      default: () => null
-    },
-    type: {
+    mfid: {
       type: String,
-      default: '2d'
+      default: ''
     }
   },
 
-  emits: ['update:modelValue'],
-
-  setup (props, { emit }) {
+  setup (props) {
     const store = useStore()
-    const membershipFuncs = computed(() => store.getters['settings/getMembershipFuncsByType'](props.type))
 
-    const selectedMf = useModelWrapper(props, emit)
+    const selectedMf = computed({
+      get () {
+        return store.getters['general/getSelectedMfByKeyAndType'](props.mfid)
+      },
+      set (val) {
+        store.commit('general/setMfByType', { k: props.mfid, v: val })
+      }
+    })
+    const membershipFuncs = computed(() => store.getters['settings/getMembershipFuncsByType'](store.state.general.type))
 
     return {
       selectedMf,

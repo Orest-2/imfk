@@ -25,7 +25,7 @@
 
     <fieldset class="mb-1">
       <legend class="font-mono mb-1">
-        Кількість колонок
+        Кількість наборів даних
       </legend>
       <div class="flex items-center w-full mb-1">
         <button
@@ -56,7 +56,7 @@
 
     <fieldset class="mb-1">
       <legend class="font-mono mb-1">
-        Кількість рядків
+        Кількість аргументів
       </legend>
       <div class="flex items-center w-full mb-1">
         <button

@@ -27,21 +27,13 @@
         </div>
       </div>
 
-      <mf-list
-        v-if="type==='2d'"
-        type="2d"
-      />
-
-      <mf-list
-        v-if="type==='3d'"
-        type="3d"
-      />
+      <mf-list />
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 import MfList from './components/mf-list/MfList.vue'
@@ -51,7 +43,15 @@ export default {
 
   setup () {
     const store = useStore()
-    const type = ref('2d')
+
+    const type = computed({
+      get () {
+        return store.state.general.type
+      },
+      set (val) {
+        store.commit('general/setType', val)
+      }
+    })
 
     store.dispatch('settings/fetchSettings')
 

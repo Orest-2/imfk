@@ -6,10 +6,7 @@
         'mb-1rem': selectedMf
       }"
     >
-      <mf-selector
-        v-model="selectedMf"
-        :type="type"
-      />
+      <mf-selector :mfid="mfid" />
 
       <div
         v-if="showDelBtn"
@@ -72,7 +69,7 @@
 </template>
 
 <script>
-import { nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import axios from 'axios'
 import { createDebounce } from '../../utils/debounce'
 import Polot from '../plot/Polot.vue'
@@ -84,28 +81,33 @@ import MfEvalData from './MfEvalData.vue'
 import Mf3DEvalData from './Mf3DEvalData.vue'
 import MfResult from './MfResult.vue'
 import { urls } from '../../constants/urls'
+import { useStore } from 'vuex'
 
 export default {
   components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData, Mf3DEvalData, MfResult },
 
   props: {
     showDelBtn: Boolean,
-    type: {
+    mfid: {
       type: String,
-      default: '2d'
+      default: ''
     }
   },
 
   emits: ['remove'],
 
   setup (props) {
+    const store = useStore()
+
     const alerts = ref(null)
-    const selectedMf = ref(null)
     const params = ref([])
     const result = ref([])
     const data = ref([0])
     const plotParams = ref([])
     const plotTraces = ref([{ x: [], y: [] }])
+
+    const type = computed(() => store.state.general.type)
+    const selectedMf = computed(() => store.getters['general/getSelectedMfByKeyAndType'](props.mfid))
 
     const debounce = createDebounce()
 
@@ -134,7 +136,7 @@ export default {
       const payload = {
         membership_func_id: selectedMf.value.id,
         func_params: params.value,
-        in_data: props.type === '3d' ? transpose(data.value) : data.value
+        in_data: type.value === '3d' ? transpose(data.value) : data.value
       }
 
       axios.post(
@@ -167,7 +169,7 @@ export default {
     )
 
     const upadteParams = () => {
-      if (props.type === '3d') {
+      if (type.value === '3d') {
         nextTick(() => {
           const cnt = data.value.length || 1
 
@@ -176,7 +178,6 @@ export default {
 
             if (l < cnt) {
               params.value[i] = [...params.value[i], ...Array(cnt - l).fill(0)]
-              console.log(params.value[i])
             }
             if (l > cnt) {
               params.value[i] = row.slice(0, cnt)
@@ -198,6 +199,7 @@ export default {
     )
 
     return {
+      type,
       selectedMf,
       params,
       plotParams,
