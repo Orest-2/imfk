@@ -25,53 +25,45 @@
       v-if="selectedMf"
       class="flex flex-wrap lg:flex-row flex-col-reverse"
     >
-      <polot
-        :traces="plotTraces"
-        :type="type"
-      />
+      <polot :mfid="mfid" />
 
       <div class="lg:w-1/2 pl-1rem -lg:px-1rem sm:w-full">
-        <danger-alert
-          ref="alerts"
-          class="mb-2"
-        />
+        <danger-alert class="mb-2" />
 
         <mf-params
           v-if="type==='2d'"
-          v-model="params"
-          v-model:modelPlotParams="plotParams"
-          :selected-mf="selectedMf"
+          :mfid="mfid"
         />
 
         <mf-3-d-params
           v-if="type==='3d'"
-          v-model="params"
-          v-model:modelPlotParams="plotParams"
-          :selected-mf="selectedMf"
+          :mfid="mfid"
         />
 
         <mf-eval-data
           v-if="type==='2d'"
-          v-model="data"
+          :mfid="mfid"
           @eval="evalData"
         />
 
         <mf-3-d-eval-data
           v-if="type==='3d'"
-          v-model="data"
+          :mfid="mfid"
           @eval="evalData"
         />
       </div>
 
-      <mf-result :result="result" />
+      <mf-result :mfid="mfid" />
     </div>
   </div>
 </template>
 
 <script>
-import { computed, nextTick, ref, watch } from 'vue'
-import axios from 'axios'
+import { useStore } from 'vuex'
+import { computed, watch } from 'vue'
+
 import { createDebounce } from '../../utils/debounce'
+
 import Polot from '../plot/Polot.vue'
 import MfParams from './MfParams.vue'
 import MfSelector from './MfSelector.vue'
@@ -80,11 +72,18 @@ import Mf3DParams from './Mf3DParams.vue'
 import MfEvalData from './MfEvalData.vue'
 import Mf3DEvalData from './Mf3DEvalData.vue'
 import MfResult from './MfResult.vue'
-import { urls } from '../../constants/urls'
-import { useStore } from 'vuex'
 
 export default {
-  components: { Polot, MfParams, MfSelector, DangerAlert, Mf3DParams, MfEvalData, Mf3DEvalData, MfResult },
+  components: {
+    Polot,
+    MfParams,
+    MfSelector,
+    DangerAlert,
+    Mf3DParams,
+    MfEvalData,
+    Mf3DEvalData,
+    MfResult
+  },
 
   props: {
     showDelBtn: Boolean,
@@ -99,33 +98,12 @@ export default {
   setup (props) {
     const store = useStore()
 
-    const alerts = ref(null)
-    const params = ref([])
-    const result = ref([])
-    const data = ref([0])
-    const plotParams = ref([])
-    const plotTraces = ref([{ x: [], y: [] }])
-
     const type = computed(() => store.state.general.type)
-    const selectedMf = computed(() => store.getters['general/getSelectedMfByKeyAndType'](props.mfid))
+    const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
+    const selectedMf = computed(() => selectedMfData.value?.mf)
+    const data = computed(() => selectedMfData.value?.evalData)
 
     const debounce = createDebounce()
-
-    const makePlot = ({ payload }) => {
-      axios.post(
-        urls.plot.replace(':type', selectedMf.value.type),
-        payload
-      )
-        .then(({ data }) => {
-          plotTraces.value = [data.data]
-
-          alerts?.value?.clearErrors()
-        })
-        .catch(err => {
-          plotTraces.value = [{ x: [], y: [] }]
-          alerts?.value?.responseErrorHandler(err)
-        })
-    }
 
     const evalData = () => {
       const transpose = matrix => matrix.reduce(
@@ -135,79 +113,39 @@ export default {
 
       const payload = {
         membership_func_id: selectedMf.value.id,
-        func_params: params.value,
+        func_params: selectedMfData.value?.funcParams,
         in_data: type.value === '3d' ? transpose(data.value) : data.value
       }
 
-      axios.post(
-        urls.eval.replace(':type', selectedMf.value.type),
-        payload
-      )
-        .then(({ data }) => {
-          result.value = [...data.data.result]
-
-          alerts?.value?.clearErrors()
-        })
-        .catch(err => {
-          alerts?.value?.responseErrorHandler(err)
-        })
+      store.dispatch('general/evalData', { k: props.mfid, payload })
     }
 
     watch(
-      [params, plotParams],
-      () => {
-        const payload = {
-          membership_func_id: selectedMf.value.id,
-          func_params: params.value,
-          plot_params: plotParams.value
+      [
+        () => selectedMfData.value?.funcParams,
+        () => selectedMfData.value?.plotParams
+      ],
+      ([funcParams, plotParams]) => {
+        if (funcParams && plotParams) {
+          const payload = {
+            membership_func_id: selectedMf.value.id,
+            func_params: funcParams,
+            plot_params: plotParams
+          }
+
+          debounce(
+            () => store.dispatch('general/makePlot', { k: props.mfid, payload }),
+            1000
+          )
         }
-        debounce(() => makePlot({ payload }), 1000)
-
-        result.value = []
       },
-      { deep: true }
-    )
-
-    const upadteParams = () => {
-      if (type.value === '3d') {
-        nextTick(() => {
-          const cnt = data.value.length || 1
-
-          params.value.forEach((row, i) => {
-            const l = row.length || 2
-
-            if (l < cnt) {
-              params.value[i] = [...params.value[i], ...Array(cnt - l).fill(0)]
-            }
-            if (l > cnt) {
-              params.value[i] = row.slice(0, cnt)
-            }
-          })
-        })
-      }
-    }
-
-    watch(
-      data,
-      upadteParams,
-      { deep: true }
-    )
-    watch(
-      selectedMf,
-      upadteParams,
       { deep: true }
     )
 
     return {
       type,
       selectedMf,
-      params,
-      plotParams,
-      plotTraces,
-      data,
-      evalData,
-      result,
-      alerts
+      evalData
     }
   }
 }

@@ -7,30 +7,33 @@
 
 <script>
 import { computed, onMounted, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: {
-    traces: {
-      type: Array,
-      default: () => []
-    },
-    type: {
+    mfid: {
       type: String,
-      default: '2d'
+      default: ''
     }
   },
 
   setup (props) {
+    const store = useStore()
+
     const plotEl = ref(null)
 
+    const type = computed(() => store.state.general.type)
+    const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
+    const plotTraces = computed(() => selectedMfData.value?.plotTraces || [])
+
     const data = computed(() => {
-      return props.traces.map(t => {
+      return plotTraces.value.map(t => {
         const trace = {
           x: t.x,
           y: t.y
         }
 
-        if (props.type === '3d') {
+        if (type.value === '3d') {
           trace.z = t.z || []
           trace.type = 'surface'
         } else {
@@ -45,7 +48,7 @@ export default {
     })
 
     const layout = {
-      dragmode: 'pan'
+      dragmode: type.value === '2d' ? 'pan' : 'turntable'
     }
 
     const config = {

@@ -97,22 +97,28 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
-import { useModelWrapper } from '../../utils/modelWrapper'
+import { computed, nextTick, onMounted, watch } from 'vue'
+import { useStore } from 'vuex'
+
 import { qs } from '../../utils/query'
 
 export default {
   props: {
-    modelValue: {
-      type: Array,
-      default: () => [[]]
+    mfid: {
+      type: String,
+      default: ''
     }
   },
 
-  emits: ['update:modelValue', 'eval'],
+  emits: ['eval'],
 
-  setup (props, { emit }) {
-    const data = useModelWrapper(props, emit)
+  setup (props) {
+    const store = useStore()
+
+    const type = computed(() => store.state.general.type)
+    const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
+    const selectedMf = computed(() => selectedMfData.value?.mf)
+    const data = computed(() => selectedMfData.value?.evalData)
 
     const countCol = computed({
       get () {
@@ -143,20 +149,65 @@ export default {
           data.value.push(Array(countCol.value).fill(0))
         }
         if (l > cnt) {
-          data.value = data.value.slice(0, cnt)
+          store.commit(
+            'general/setMfEvalDataByType',
+            { k: props.mfid, v: data.value.slice(0, cnt) }
+          )
         }
       }
     })
 
+    const upadteParams = () => {
+      if (type.value === '3d' && data.value) {
+        const params = selectedMfData.value?.funcParams
+
+        nextTick(() => {
+          const cnt = data.value.length || 1
+
+          params.forEach((row, i) => {
+            const l = row.length || 2
+
+            if (l < cnt) {
+              params[i] = [...params[i], ...Array(cnt - l).fill(0)]
+            }
+            if (l > cnt) {
+              params[i] = row.slice(0, cnt)
+            }
+          })
+        })
+      }
+    }
+
+    watch(
+      selectedMf,
+      upadteParams,
+      { deep: true }
+    )
+
+    watch(
+      data,
+      upadteParams,
+      { deep: true }
+    )
+
     onMounted(() => {
       if (qs.params.get('test') === '1') {
-        data.value = [
-          [0.87, 0.82, 0.60, 0.77, 0.69],
-          [0.66, 0.83, 0.71, 0.98, 0.91],
-          [0.78, 0.40, 0.54, 0.85, 0.82]
-        ]
+        store.commit(
+          'general/setMfEvalDataByType',
+          {
+            k: props.mfid,
+            v: [
+              [0.87, 0.82, 0.60, 0.77, 0.69],
+              [0.66, 0.83, 0.71, 0.98, 0.91],
+              [0.78, 0.40, 0.54, 0.85, 0.82]
+            ]
+          }
+        )
       } else {
-        data.value = [[0, 0], [0, 0]]
+        store.commit(
+          'general/setMfEvalDataByType',
+          { k: props.mfid, v: [[0, 0], [0, 0]] }
+        )
       }
     })
 

@@ -56,21 +56,25 @@
 
 <script>
 import { computed, onMounted } from 'vue'
-import { useModelWrapper } from '../../utils/modelWrapper'
+import { useStore } from 'vuex'
+
 import { qs } from '../../utils/query'
 
 export default {
   props: {
-    modelValue: {
-      type: Array,
-      default: () => []
+    mfid: {
+      type: String,
+      default: ''
     }
   },
 
-  emits: ['update:modelValue', 'eval'],
+  emits: ['eval'],
 
-  setup (props, { emit }) {
-    const data = useModelWrapper(props, emit)
+  setup (props) {
+    const store = useStore()
+
+    const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
+    const data = computed(() => selectedMfData.value?.evalData)
 
     const count = computed({
       get () {
@@ -90,9 +94,15 @@ export default {
 
     onMounted(() => {
       if (qs.params.get('test') === '1') {
-        data.value = [0.415, 0.350, 0.613, 0.283, 0.927]
+        store.commit(
+          'general/setMfEvalDataByType',
+          { k: props.mfid, v: [0.415, 0.350, 0.613, 0.283, 0.927] }
+        )
       } else {
-        data.value = [0]
+        store.commit(
+          'general/setMfEvalDataByType',
+          { k: props.mfid, v: [0] }
+        )
       }
     })
 

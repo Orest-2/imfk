@@ -11,30 +11,18 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   setup () {
-    const errorList = ref([])
+    const store = useStore()
 
-    const clearErrors = () => {
-      errorList.value = []
-    }
-
-    const responseErrorHandler = (data) => {
-      if (data?.response) {
-        const { error } = data?.response?.data || {}
-
-        clearErrors()
-
-        errorList.value.push({ detail: error })
-      }
-    }
+    const errorList = computed(() => store.state.error.list)
 
     return {
-      errorList,
-      responseErrorHandler,
-      clearErrors
+      store,
+      errorList
     }
   }
 }

@@ -51,62 +51,29 @@
 </template>
 
 <script>
-import { onMounted, watch } from 'vue'
-import { useModelWrapper } from '../../utils/modelWrapper'
-
-const defaultParams = {
-  conemf: [[0.5, 0.5], [0.4, 0.4]],
-  pyrammf: [[0.5, 0.5], [0.4, 0.4]],
-  trappyrammf: [[0.5, 0.5], [0.2, 1], [0.4, 0.4]],
-  gsigmf: [[0.5, 0.5], [0, 10]],
-  gbell3dmf: [[0.5, 0.5], [0.2, 0.2], [2.5, 2.5]],
-  gauss3dmf: [[0.5, 0.5], [0.25, 0.25]],
-  hyperbolmf: [[0.5, 0.5], [0.25, 0.25]],
-  ellipsmf: [[0.5, 0.5], [0.4, 0.4]]
-}
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   props: {
-    modelValue: {
-      type: Array,
-      default: () => []
-    },
-    modelPlotParams: {
-      type: Array,
-      default: () => []
-    },
-    selectedMf: {
-      type: Object,
-      required: true,
-      default: () => null
+    mfid: {
+      type: String,
+      default: ''
     }
   },
 
-  emits: ['update:modelValue', 'update:modelPlotParams'],
+  setup (props) {
+    const store = useStore()
 
-  setup (props, { emit }) {
-    const params = useModelWrapper(props, emit)
-    const plotParams = useModelWrapper(props, emit, 'modelPlotParams')
-
-    const initparams = () => {
-      const dp = defaultParams[props.selectedMf.code]
-
-      if (dp) {
-        params.value = [...dp]
-      } else {
-        params.value = Array(props.selectedMf.params_count).fill(0).map(() => [0, 0])
-      }
-
-      plotParams.value = [1, 0.01]
-    }
-
-    watch(() => props.selectedMf, initparams)
-
-    onMounted(initparams)
+    const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
+    const selectedMf = computed(() => selectedMfData.value?.mf)
+    const plotParams = computed(() => selectedMfData.value?.plotParams)
+    const params = computed(() => selectedMfData.value?.funcParams)
 
     return {
-      params,
-      plotParams
+      selectedMf,
+      plotParams,
+      params
     }
   }
 }
