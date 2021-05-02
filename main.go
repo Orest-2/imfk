@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Orest-2/imfk/controllers"
+	mfsController "github.com/Orest-2/imfk/controllers/mfs"
 	"github.com/Orest-2/imfk/mocks"
 	"github.com/Orest-2/imfk/models"
 	"github.com/gin-contrib/static"
@@ -42,11 +43,12 @@ func main() {
 		// settings
 		v1.GET("/settings", controllers.GetSettings)
 		//mf plot
-		v1.POST("/mf/2d/plot", controllers.Make2DPlot)
-		v1.POST("/mf/3d/plot", controllers.Make3DPlot)
+		v1.POST("/mf/2d/plot", mfsController.Make2DPlot)
+		v1.POST("/mf/operation/:operation/2d/plot", mfsController.Operation2DPlot)
+		v1.POST("/mf/3d/plot", mfsController.Make3DPlot)
 		//mf eval
-		v1.POST("/mf/2d/eval", controllers.Eval2D)
-		v1.POST("/mf/3d/eval", controllers.Eval3D)
+		v1.POST("/mf/2d/eval", mfsController.Eval2D)
+		v1.POST("/mf/3d/eval", mfsController.Eval3D)
 	}
 
 	mime.AddExtensionType(".js", "text/javascript")
