@@ -32,7 +32,7 @@ func Operation2DPlot(c *gin.Context) {
 
 	operation := c.Param("operation")
 
-	if operation != "" {
+	if operation == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "operation is mandatory"})
 		return
 	}
