@@ -42,7 +42,7 @@ func Operation2DPlot(c *gin.Context) {
 		return
 	}
 
-	if len(json.Data) >= 2 {
+	if len(json.Data) < 2 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "minimun 2 functions"})
 		return
 	}
@@ -131,6 +131,27 @@ func applyOperationSlice(operation string, in, data []float64) []float64 {
 		for i, v := range in {
 			v2 := data[i]
 			res = append(res, math.Max(v, v2))
+		}
+
+	case DifferenceOperation:
+
+		for i, v := range in {
+			v2 := data[i]
+			res = append(res, math.Min(v, 1-v2))
+		}
+
+	case SymmetricalDifferenceOperation:
+
+		for i, v := range in {
+			v2 := data[i]
+			res = append(res, math.Abs(v-v2))
+		}
+
+	case DisjunctiveSumOperation:
+
+		for i, v := range in {
+			v2 := data[i]
+			res = append(res, math.Max(math.Min(v, 1-v2), math.Min(1-v, v2)))
 		}
 
 	}
