@@ -3,10 +3,20 @@
     <div
       class="-lg:px-1rem flex space-x-2"
       :class="{
-        'mb-1rem': selectedMf
+        'mb-1rem': operands.length > 1
       }"
     >
-      <mf-selector :mfid="mfid" />
+      <mf-selector
+        :mfid="mfid"
+        :operand="0"
+      />
+
+      <mf-operation-selector :mfid="mfid" />
+
+      <mf-selector
+        :mfid="mfid"
+        :operand="1"
+      />
 
       <div
         v-if="showDelBtn"
@@ -22,7 +32,7 @@
     </div>
 
     <div
-      v-if="selectedMf"
+      v-if="operands.length > 1"
       class="flex flex-wrap lg:flex-row flex-col-reverse"
     >
       <polot :mfid="mfid" />
@@ -30,18 +40,26 @@
       <div class="lg:w-1/2 pl-1rem -lg:px-1rem sm:w-full">
         <danger-alert class="mb-2" />
 
-        <polot-params :mfid="mfid" />
+        <PolotParams :mfid="mfid" />
 
         <mf-params
           v-if="type==='2d'"
           :mfid="mfid"
+          :operand="0"
         />
 
-        <mf-3-d-params
+        <mf-params
+          v-if="type==='2d'"
+          :mfid="mfid"
+          :operand="1"
+          hide-plot-params
+        />
+
+        <!-- <mf-3-d-params
           v-if="type==='3d'"
           :mfid="mfid"
-        />
-
+        /> -->
+        <!--
         <mf-eval-data
           v-if="type==='2d'"
           :mfid="mfid"
@@ -52,7 +70,7 @@
           v-if="type==='3d'"
           :mfid="mfid"
           @eval="evalData"
-        />
+        /> -->
       </div>
 
       <mf-result :mfid="mfid" />
@@ -66,25 +84,27 @@ import { computed, watch } from 'vue'
 
 import { createDebounce } from '../../utils/debounce'
 
-import Polot from '../plot/Polot.vue'
-import MfParams from './MfParams.vue'
 import MfSelector from './MfSelector.vue'
+import MfOperationSelector from './MfOperationSelector.vue'
+import Polot from '../plot/Polot.vue'
 import DangerAlert from '../alerts/DangerAlert.vue'
-import Mf3DParams from './Mf3DParams.vue'
-import MfEvalData from './MfEvalData.vue'
-import Mf3DEvalData from './Mf3DEvalData.vue'
+import MfParams from './MfParams.vue'
+// import Mf3DParams from './Mf3DParams.vue'
+// import MfEvalData from './MfEvalData.vue'
+// import Mf3DEvalData from './Mf3DEvalData.vue'
 import MfResult from './MfResult.vue'
 import PolotParams from '../plot/PolotParams.vue'
 
 export default {
   components: {
-    Polot,
-    MfParams,
     MfSelector,
+    MfOperationSelector,
+    Polot,
     DangerAlert,
-    Mf3DParams,
-    MfEvalData,
-    Mf3DEvalData,
+    MfParams,
+    // Mf3DParams,
+    // MfEvalData,
+    // Mf3DEvalData,
     MfResult,
     PolotParams
   },
@@ -104,41 +124,44 @@ export default {
 
     const type = computed(() => store.state.general.type)
     const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
-    const selectedMf = computed(() => selectedMfData.value?.mf)
-    const data = computed(() => selectedMfData.value?.evalData)
+    const operands = computed(() => selectedMfData.value?.operands || [])
+    // const data = computed(() => selectedMfData.value?.evalData)
 
     const debounce = createDebounce()
 
-    const evalData = () => {
-      const transpose = matrix => matrix.reduce(
-        ($, row) => row.map((_, i) => [...($[i] || []), row[i]]),
-        []
-      )
+    // const evalData = () => {
+    //   const transpose = matrix => matrix.reduce(
+    //     ($, row) => row.map((_, i) => [...($[i] || []), row[i]]),
+    //     []
+    //   )
 
-      const payload = {
-        membership_func_id: selectedMf.value.id,
-        func_params: selectedMfData.value?.funcParams,
-        in_data: type.value === '3d' ? transpose(data.value) : data.value
-      }
+    //   const payload = {
+    //     membership_func_id: selectedMf.value.id,
+    //     func_params: selectedMfData.value?.funcParams,
+    //     in_data: type.value === '3d' ? transpose(data.value) : data.value
+    //   }
 
-      store.dispatch('general/evalData', { k: props.mfid, payload })
-    }
+    //   store.dispatch('general/evalData', { k: props.mfid, payload })
+    // }
 
     watch(
       [
-        () => selectedMfData.value?.funcParams,
+        () => operands.value,
+        () => selectedMfData.value?.operation,
         () => selectedMfData.value?.plotParams
       ],
-      ([funcParams, plotParams]) => {
-        if (funcParams && plotParams) {
-          const payload = {
-            membership_func_id: selectedMf.value.id,
-            func_params: funcParams,
+      ([operands, operation, plotParams]) => {
+        if (operands.length > 1 && operation && plotParams) {
+          const data = operands.map(operand => ({
+            membership_func_id: operand.mf.id,
+            func_params: operand.funcParams,
             plot_params: plotParams
-          }
+          }))
+
+          const payload = { data }
 
           debounce(
-            () => store.dispatch('general/makePlot', { k: props.mfid, payload }),
+            () => store.dispatch('general/operationMakePlot', { k: props.mfid, payload }),
             1000
           )
         }
@@ -148,8 +171,8 @@ export default {
 
     return {
       type,
-      selectedMf,
-      evalData
+      operands
+      // evalData
     }
   }
 }

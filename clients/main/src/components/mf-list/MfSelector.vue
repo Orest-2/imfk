@@ -7,7 +7,10 @@
       v-model="selectedMf"
       class="border-3 border-gray-500 rounded w-full p-1.2"
     >
-      <option :value="null">
+      <option
+        :value="null"
+        selected
+      >
         Нічого не вибрано
       </option>
       <option
@@ -30,21 +33,32 @@ export default {
     mfid: {
       type: String,
       default: ''
+    },
+    operand: {
+      type: Number,
+      default: -1
     }
   },
 
   setup (props) {
     const store = useStore()
 
+    const membershipFuncs = computed(() => store.getters['settings/getMembershipFuncsByType'](store.state.general.type))
     const selectedMf = computed({
       get () {
+        if (props.operand >= 0) {
+          return store.getters['general/getOperandByKeyAndOperandIndxAndType'](props.mfid, props.operand)?.mf || null
+        }
         return store.getters['general/getSelectedMfByKeyAndType'](props.mfid)
       },
       set (val) {
+        if (props.operand >= 0) {
+          store.commit('general/setOperandByType', { k: props.mfid, i: props.operand, v: val })
+          return
+        }
         store.commit('general/setMfByType', { k: props.mfid, v: val })
       }
     })
-    const membershipFuncs = computed(() => store.getters['settings/getMembershipFuncsByType'](store.state.general.type))
 
     return {
       selectedMf,

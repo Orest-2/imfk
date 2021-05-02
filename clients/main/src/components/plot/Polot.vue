@@ -33,13 +33,20 @@ export default {
           y: t.y
         }
 
+        if (t.name) {
+          trace.name = t.name
+        }
+
         if (type.value === '3d') {
           trace.z = t.z || []
           trace.type = 'surface'
         } else {
           trace.line = {
-            color: 'red',
+            color: t.color || 'red',
             width: 2
+          }
+          if (t.dash) {
+            trace.line.dash = t.dash
           }
         }
 

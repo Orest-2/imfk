@@ -1,32 +1,7 @@
 <template>
   <fieldset class="mb-2">
     <legend class="font-mono mb-1">
-      Параметри графіка
-    </legend>
-    <div class="flex flex-wrap space md:-mx-1">
-      <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">
-        <input
-          v-model.number="plotParams[0]"
-          class="border-3 border-gray-500 rounded w-full p-1"
-          type="number"
-          step="1"
-        >
-      </div>
-
-      <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">
-        <input
-          v-model.number="plotParams[1]"
-          class="border-3 border-gray-500 rounded w-full p-1"
-          type="number"
-          step="0.1"
-        >
-      </div>
-    </div>
-  </fieldset>
-
-  <fieldset class="mb-2">
-    <legend class="font-mono mb-1">
-      Параметри функції
+      Параметри функції {{ operand >= 0 && operand+1 }}
     </legend>
     <ul class="list-lowerlatin list-inside">
       <div class="flex flex-wrap space md:-mx-1">
@@ -57,6 +32,10 @@ export default {
     mfid: {
       type: String,
       default: ''
+    },
+    operand: {
+      type: Number,
+      default: -1
     }
   },
 
@@ -64,13 +43,12 @@ export default {
     const store = useStore()
 
     const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
-    const selectedMf = computed(() => selectedMfData.value?.mf)
-    const plotParams = computed(() => selectedMfData.value?.plotParams)
-    const params = computed(() => selectedMfData.value?.funcParams)
+    const operands = computed(() => selectedMfData.value?.operands || [])
+    const selectedMf = computed(() => ((operands.value.length && operands.value[props.operand]) || selectedMfData.value)?.mf)
+    const params = computed(() => ((operands.value.length && operands.value[props.operand]) || selectedMfData.value)?.funcParams)
 
     return {
       selectedMf,
-      plotParams,
       params
     }
   }
