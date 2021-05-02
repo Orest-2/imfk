@@ -97,7 +97,7 @@ func Operation2DPlot(c *gin.Context) {
 
 	for i := 1; i < len(res.Data); i++ {
 
-		resDataItem.X = applyOperationSlice(operation, resDataItem.X, res.Data[i].X)
+		// resDataItem.X = applyOperationSlice(operation, resDataItem.X, res.Data[i].X)
 		resDataItem.Y = applyOperationSlice(operation, resDataItem.Y, res.Data[i].Y)
 
 	}
