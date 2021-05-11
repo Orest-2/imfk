@@ -15,7 +15,7 @@ type operation2DEvalResponseData struct {
 }
 
 type operation2DEvalRequest struct {
-	Data []eval2DRequest `json:"data" binding:"required"`
+	Data []eval2DRequest `json:"data"`
 }
 
 type operation2DEvalResponse struct {
