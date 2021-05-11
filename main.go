@@ -48,6 +48,7 @@ func main() {
 		v1.POST("/mf/3d/plot", mfsController.Make3DPlot)
 		//mf eval
 		v1.POST("/mf/2d/eval", mfsController.Eval2D)
+		v1.POST("/mf/operation/:operation/2d/eval", mfsController.Operation2DEval)
 		v1.POST("/mf/3d/eval", mfsController.Eval3D)
 	}
 
