@@ -4,5 +4,6 @@ export const urls = {
   settings: `${ApiHost}/api/v1/settings`,
   eval: `${ApiHost}/api/v1/mf/:type/eval`,
   plot: `${ApiHost}/api/v1/mf/:type/plot`,
-  operationPlot: `${ApiHost}/api/v1/mf/operation/:operation/:type/plot`
+  operationPlot: `${ApiHost}/api/v1/mf/operation/:operation/:type/plot`,
+  operationEval: `${ApiHost}/api/v1/mf/operation/:operation/:type/eval`
 }

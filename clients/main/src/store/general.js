@@ -20,6 +20,7 @@ const defaultMfOperationObj = {
   operation: 'intersection',
   plotParams: [1, 0.01],
   plotTraces: [],
+  evalData: [],
   evalDataResult: []
 }
 
@@ -190,6 +191,23 @@ export const general = {
           dispatch('error/clearErrors', null, { root: true })
 
           commit('setMfEvalDataResultByType', { k, v: [...data.data.result] })
+        })
+        .catch(err => {
+          dispatch('error/setErrors', err, { root: true })
+        })
+    },
+
+    operationEvalData ({ state, getters, commit, dispatch }, { k, payload }) {
+      const { operation } = getters.getSelectedMfDataByKeyAndType(k)
+
+      axios.post(
+        urls.operationEval.replace(':type', state.type).replace(':operation', operation),
+        payload
+      )
+        .then(({ data }) => {
+          dispatch('error/clearErrors', null, { root: true })
+
+          commit('setMfEvalDataResultByType', { k, v: [...data.data[2].result] })
         })
         .catch(err => {
           dispatch('error/setErrors', err, { root: true })

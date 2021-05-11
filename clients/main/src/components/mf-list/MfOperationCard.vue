@@ -52,21 +52,20 @@
           v-if="type==='2d'"
           :mfid="mfid"
           :operand="1"
-          hide-plot-params
         />
 
         <!-- <mf-3-d-params
           v-if="type==='3d'"
           :mfid="mfid"
         /> -->
-        <!--
+
         <mf-eval-data
           v-if="type==='2d'"
           :mfid="mfid"
           @eval="evalData"
         />
 
-        <mf-3-d-eval-data
+        <!-- <mf-3-d-eval-data
           v-if="type==='3d'"
           :mfid="mfid"
           @eval="evalData"
@@ -89,8 +88,8 @@ import MfOperationSelector from './MfOperationSelector.vue'
 import Polot from '../plot/Polot.vue'
 import DangerAlert from '../alerts/DangerAlert.vue'
 import MfParams from './MfParams.vue'
+import MfEvalData from './MfEvalData.vue'
 // import Mf3DParams from './Mf3DParams.vue'
-// import MfEvalData from './MfEvalData.vue'
 // import Mf3DEvalData from './Mf3DEvalData.vue'
 import MfResult from './MfResult.vue'
 import PolotParams from '../plot/PolotParams.vue'
@@ -102,8 +101,8 @@ export default {
     Polot,
     DangerAlert,
     MfParams,
+    MfEvalData,
     // Mf3DParams,
-    // MfEvalData,
     // Mf3DEvalData,
     MfResult,
     PolotParams
@@ -125,24 +124,26 @@ export default {
     const type = computed(() => store.state.general.type)
     const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
     const operands = computed(() => selectedMfData.value?.operands || [])
-    // const data = computed(() => selectedMfData.value?.evalData)
+    const inData = computed(() => selectedMfData.value?.evalData)
 
     const debounce = createDebounce()
 
-    // const evalData = () => {
-    //   const transpose = matrix => matrix.reduce(
-    //     ($, row) => row.map((_, i) => [...($[i] || []), row[i]]),
-    //     []
-    //   )
+    const evalData = () => {
+      const transpose = matrix => matrix.reduce(
+        ($, row) => row.map((_, i) => [...($[i] || []), row[i]]),
+        []
+      )
 
-    //   const payload = {
-    //     membership_func_id: selectedMf.value.id,
-    //     func_params: selectedMfData.value?.funcParams,
-    //     in_data: type.value === '3d' ? transpose(data.value) : data.value
-    //   }
+      const data = operands.value.map(operand => ({
+        membership_func_id: operand.mf.id,
+        func_params: operand.funcParams,
+        in_data: type.value === '3d' ? transpose(inData.value) : inData.value
+      }))
 
-    //   store.dispatch('general/evalData', { k: props.mfid, payload })
-    // }
+      const payload = { data }
+
+      store.dispatch('general/operationEvalData', { k: props.mfid, payload })
+    }
 
     watch(
       [
@@ -171,8 +172,8 @@ export default {
 
     return {
       type,
-      operands
-      // evalData
+      operands,
+      evalData
     }
   }
 }
