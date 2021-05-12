@@ -130,7 +130,7 @@ export default {
         () => selectedMfData.value?.plotParams
       ],
       ([funcParams, plotParams]) => {
-        if (funcParams && plotParams) {
+        if (selectedMf.value && funcParams && plotParams) {
           const payload = {
             membership_func_id: selectedMf.value.id,
             func_params: funcParams,

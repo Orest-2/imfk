@@ -46,3 +46,14 @@ export const defaultParams = {
     [0.4, 0.4]
   ]
 }
+
+export const paramsLetters = {
+  conemf: ['x0', 'h'],
+  pyrammf: ['x0', 'h'],
+  trappyrammf: ['x0', 'h', 'a'],
+  gsigmf: ['x0', 'a'],
+  gbell3dmf: ['x0', 'a', 'b'],
+  gauss3dmf: ['x0', 'a'],
+  hyperbolmf: ['x0', 'a'],
+  ellipsmf: ['x0', 'a']
+}
