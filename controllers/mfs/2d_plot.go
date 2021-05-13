@@ -210,7 +210,7 @@ func get2DPlotData(
 
 	case mfs.SquareSSplineMembershipFuncCode:
 
-		tmf, err := mfs.NewHarmoniousSSpline(params)
+		tmf, err := mfs.NewSquareSSpline(params)
 		if err != nil {
 			return vx, vy, mfParams, err
 		}
