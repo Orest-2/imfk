@@ -70,7 +70,7 @@ func (t *ZLinear) validateAndSetParams(params []float64) error {
 	mp := 2
 
 	if len(params) < mp {
-		return fmt.Errorf("Мінімум %v параметра: (a, b)", mp)
+		return fmt.Errorf("мінімум %v параметра: (a, b)", mp)
 	}
 
 	lib.UnpackFloat64(params, &a, &b)

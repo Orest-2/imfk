@@ -63,7 +63,7 @@ func (t *BellShaped) validateAndSetParams(params []float64) error {
 	mp := 3
 
 	if len(params) < mp {
-		return fmt.Errorf("Мінімум %v параметра: (a, b, c)", mp)
+		return fmt.Errorf("мінімум %v параметра: (a, b, c)", mp)
 	}
 
 	lib.UnpackFloat64(params, &a, &b, &c)

@@ -60,7 +60,7 @@ func (t Ellipsoid) Eval(xv []float64) float64 {
 	}
 
 	if e < 1 {
-		return math.Sqrt(1- e)
+		return math.Sqrt(1 - e)
 	}
 
 	return 0
@@ -75,7 +75,7 @@ func (t *Ellipsoid) validateAndSetParams(params [][]float64) error {
 	mp := 2
 
 	if len(params) < mp {
-		return fmt.Errorf("Мінімум %v параметра: (a, b)", mp)
+		return fmt.Errorf("мінімум %v параметра: (a, b)", mp)
 	}
 
 	lib.UnpackFloat64Slice(params, &a, &b)

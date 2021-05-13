@@ -49,7 +49,7 @@ func (t SquareSSpline) Eval(x float64) float64 {
 	a, b, sumab := t.a, t.b, t.a+t.b
 
 	if x <= a {
-		return 1
+		return 0
 	}
 
 	if a < x && x <= sumab/2 {
@@ -66,7 +66,7 @@ func (t SquareSSpline) Eval(x float64) float64 {
 		return 1 - 2*math.Pow((f/s), 2)
 	}
 
-	return 0
+	return 1
 
 }
 
@@ -78,7 +78,7 @@ func (t *SquareSSpline) validateAndSetParams(params []float64) error {
 	mp := 2
 
 	if len(params) < mp {
-		return fmt.Errorf("Мінімум %v параметра: (a, b)", mp)
+		return fmt.Errorf("мінімум %v параметра: (a, b)", mp)
 	}
 
 	lib.UnpackFloat64(params, &a, &b)

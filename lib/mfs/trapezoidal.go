@@ -77,7 +77,7 @@ func (t *Trapezoidal) validateAndSetParams(params []float64) error {
 	mp := 4
 
 	if len(params) < mp {
-		return fmt.Errorf("Мінімум %v параметра: (a, b, c, d)", mp)
+		return fmt.Errorf("мінімум %v параметра: (a, b, c, d)", mp)
 	}
 
 	lib.UnpackFloat64(params, &a, &b, &c, &d)
