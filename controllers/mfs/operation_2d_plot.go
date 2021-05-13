@@ -2,7 +2,6 @@ package mfsController
 
 import (
 	"errors"
-	"math"
 	"net/http"
 
 	"github.com/Orest-2/imfk/models"
@@ -17,14 +16,6 @@ type operation2DPlotRequest struct {
 type operation2DPlotResponse struct {
 	Data []make2DPlotResponse `json:"data"`
 }
-
-const (
-	IntersectionOperation          = "intersection"
-	AssociationOperation           = "association"
-	DifferenceOperation            = "difference"
-	SymmetricalDifferenceOperation = "symmetrical_difference"
-	DisjunctiveSumOperation        = "disjunctive_sum"
-)
 
 // Operation2DPlot ...
 func Operation2DPlot(c *gin.Context) {
@@ -110,52 +101,5 @@ func Operation2DPlot(c *gin.Context) {
 			"data": res.Data,
 		},
 	)
-
-}
-
-func applyOperationSlice(operation string, in, data []float64) []float64 {
-
-	res := []float64{}
-
-	switch operation {
-
-	case IntersectionOperation:
-
-		for i, v := range in {
-			v2 := data[i]
-			res = append(res, math.Min(v, v2))
-		}
-
-	case AssociationOperation:
-
-		for i, v := range in {
-			v2 := data[i]
-			res = append(res, math.Max(v, v2))
-		}
-
-	case DifferenceOperation:
-
-		for i, v := range in {
-			v2 := data[i]
-			res = append(res, math.Min(v, 1-v2))
-		}
-
-	case SymmetricalDifferenceOperation:
-
-		for i, v := range in {
-			v2 := data[i]
-			res = append(res, math.Abs(v-v2))
-		}
-
-	case DisjunctiveSumOperation:
-
-		for i, v := range in {
-			v2 := data[i]
-			res = append(res, math.Max(math.Min(v, 1-v2), math.Min(1-v, v2)))
-		}
-
-	}
-
-	return res
 
 }
