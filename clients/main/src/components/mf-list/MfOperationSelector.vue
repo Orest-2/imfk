@@ -1,7 +1,7 @@
 <template>
   <fieldset class="w-full">
     <legend class="font-mono mb-1">
-      Виберіть операцію
+      {{ $t('general.select_an_operation') }}
     </legend>
     <select
       v-model="selectedMfOpretion"
@@ -21,6 +21,7 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 
 export default {
   props: {
@@ -31,30 +32,31 @@ export default {
   },
 
   setup (props) {
+    const { t } = useI18n({ useScope: 'global' })
     const store = useStore()
 
-    const operations = [
+    const operations = computed(() => [
       {
         value: 'intersection',
-        text: 'Перетин'
+        text: t('operations.intersection')
       },
       {
         value: 'association',
-        text: 'Об\'єднання'
+        text: t('operations.association')
       },
       {
         value: 'difference',
-        text: 'Різниця'
+        text: t('operations.difference')
       },
       {
         value: 'symmetrical_difference',
-        text: 'Симетрична різниця'
+        text: t('operations.symmetrical_difference')
       },
       {
         value: 'disjunctive_sum',
-        text: 'Диз\'юнктивна сума'
+        text: t('operations.disjunctive_sum')
       }
-    ]
+    ])
 
     const selectedMfData = computed(() => store.getters['general/getSelectedMfDataByKeyAndType'](props.mfid))
 

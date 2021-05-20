@@ -10,7 +10,19 @@ export const messages = {
       graph_parameters: 'Graph parameters',
       enter_the_information_you_want_to_formalize: 'Enter the information you want to formalize',
       evaluate: 'Evaluate',
+      select_an_operation: 'Select an operation',
+      result: 'Result',
+      empty: 'Empty',
+      number_of_data_sets: 'Number of data sets',
+      number_of_arguments: 'Number of arguments',
       function_parameters: 'Function parameters'
+    },
+    operations: {
+      intersection: 'Intersection',
+      association: 'Association',
+      difference: 'Difference',
+      symmetrical_difference: 'Symmetrical difference',
+      disjunctive_sum: 'Disjunctive sum'
     }
   },
   ua: {
@@ -24,7 +36,19 @@ export const messages = {
       graph_parameters: 'Параметри графіка',
       enter_the_information_you_want_to_formalize: 'Введіть інформацію, що потрібно формалізувати',
       evaluate: 'Виконати',
+      select_an_operation: 'Виберіть операцію',
+      result: 'Результат',
+      empty: 'Нічого не вибрано',
+      number_of_data_sets: 'Кількість наборів даних',
+      number_of_arguments: 'Кількість аргументів',
       function_parameters: 'Параметри функції'
+    },
+    operations: {
+      intersection: 'Перетин',
+      association: 'Об\'єднання',
+      difference: 'Різниця',
+      symmetrical_difference: 'Симетрична різниця',
+      disjunctive_sum: 'Диз\'юнктивна сума'
     }
   }
 }

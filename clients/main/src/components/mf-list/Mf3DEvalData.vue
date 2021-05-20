@@ -25,7 +25,7 @@
 
     <fieldset class="mb-1">
       <legend class="font-mono mb-1">
-        Кількість наборів даних
+        {{ $t('general.number_of_data_sets') }}
       </legend>
       <div class="flex items-center w-full mb-1">
         <button
@@ -56,7 +56,7 @@
 
     <fieldset class="mb-1">
       <legend class="font-mono mb-1">
-        Кількість аргументів
+        {{ $t('general.number_of_arguments') }}
       </legend>
       <div class="flex items-center w-full mb-1">
         <button

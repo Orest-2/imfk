@@ -4,7 +4,7 @@
     class="w-full text-center"
   >
     <div class="text-3xl mb-3 font-mono">
-      Результат
+      {{ $t('general.result') }}
     </div>
     <div class="text-xl">
       {{ `${resf.join(' | ')}` }}

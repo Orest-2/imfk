@@ -11,7 +11,7 @@
         :value="null"
         selected
       >
-        Нічого не вибрано
+        {{ $t('general.empty') }}
       </option>
       <option
         v-for="mf in membershipFuncs"
