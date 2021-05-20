@@ -4,7 +4,7 @@
     class="mb-2"
   >
     <legend class="font-mono mb-1">
-      Параметри графіка
+      {{ $t('general.graph_parameters') }}
     </legend>
     <div class="flex flex-wrap space md:-mx-1">
       <div class="flex items-center w-full md:w-1/8 md:mx-1 md:mb-0 mb-1">

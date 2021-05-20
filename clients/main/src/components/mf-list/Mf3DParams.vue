@@ -1,7 +1,7 @@
 <template>
   <fieldset class="mb-2">
     <legend class="font-mono mb-1">
-      Параметри функції
+      {{ $t('general.function_parameters') }}
     </legend>
     <ul class="list-lowerlatin list-inside">
       <div class="flex flex-wrap space md:-mx-1">

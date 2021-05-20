@@ -2,9 +2,22 @@
   <div>
     <div class="lg:container mx-auto min-h-screen bg-white">
       <div class="pt-10px">
-        <p class="text-3xl text-center font-mono">
-          Функції належності
-        </p>
+        <div class=" text-center">
+          <span class="text-3xl font-mono">
+            {{ $t('general.membership_functions') }}
+          </span>
+          <select
+            v-model="$i18n.locale"
+            class="float-right"
+          >
+            <option value="en">
+              EN
+            </option>
+            <option value="ua">
+              UA
+            </option>
+          </select>
+        </div>
       </div>
 
       <div class="font-mono flex justify-center divide-x-2 divide-black border-b-2 p-15px border-true-gray-500">
@@ -14,7 +27,7 @@
           :class="{ 'text-true-gray-400 hover:text-black': type !== '2d' }"
           @click="type = '2d'"
         >
-          Однієї змінної
+          {{ $t('general.one_variable') }}
         </div>
 
         <div
@@ -23,7 +36,7 @@
           :class="{ 'text-true-gray-400 hover:text-black': type !== '3d' }"
           @click="type = '3d'"
         >
-          Багатьох змінних
+          {{ $t('general.many_variables') }}
         </div>
       </div>
 

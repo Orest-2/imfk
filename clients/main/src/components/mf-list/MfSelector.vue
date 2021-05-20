@@ -1,7 +1,7 @@
 <template>
   <fieldset class="w-full">
     <legend class="font-mono mb-1">
-      Виберіть функцію належності
+      {{ $t('general.select_the_membership_function') }}
     </legend>
     <select
       v-model="selectedMf"

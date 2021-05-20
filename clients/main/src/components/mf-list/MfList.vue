@@ -23,7 +23,7 @@
         class="mx-15px px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
         @click="addMf"
       >
-        + Добавити функцію належності
+        {{ $t('general.add_membership_function') }}
       </button>
 
       <button
@@ -31,7 +31,7 @@
         class="mx-15px px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
         @click="addMfOperation"
       >
-        + Добавити операцію
+        {{ $t('general.add_operation') }}
       </button>
     </div>
   </div>

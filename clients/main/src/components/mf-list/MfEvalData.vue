@@ -1,7 +1,7 @@
 <template>
   <fieldset class="mb-2">
     <legend class="font-mono mb-1">
-      Введіть інформацію, що потрібно формалізувати
+      {{ $t('general.enter_the_information_you_want_to_formalize') }}
     </legend>
     <div class="flex flex-wrap space md:-mx-1">
       <div
@@ -48,7 +48,7 @@
         class="mx-auto px-15px py-5px border-3 border-gray-500 rounded w-full font-mono hover:bg-true-gray-100 bg-true-gray-200"
         @click="$emit('eval')"
       >
-        Виконати
+        {{ $t('general.evaluate') }}
       </button>
     </div>
   </fieldset>

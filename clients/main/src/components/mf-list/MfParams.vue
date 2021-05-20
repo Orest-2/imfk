@@ -1,7 +1,7 @@
 <template>
   <fieldset class="mb-2">
     <legend class="font-mono mb-1">
-      Параметри функції {{ operand >= 0 && operand+1 }}
+      {{ $t('general.function_parameters') }} {{ operand >= 0 && operand+1 || '' }}
     </legend>
     <ul class="list-lowerlatin list-inside">
       <div class="flex flex-wrap space md:-mx-1">
