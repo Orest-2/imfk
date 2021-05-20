@@ -18,7 +18,7 @@
         :key="mf.id"
         :value="mf"
       >
-        {{ mf.name }}
+        {{ $t(`membership_functions.${mf.code}`) }}
       </option>
     </select>
   </fieldset>

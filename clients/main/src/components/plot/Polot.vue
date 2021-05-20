@@ -8,6 +8,7 @@
 <script>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 
 export default {
   props: {
@@ -18,6 +19,7 @@ export default {
   },
 
   setup (props) {
+    const { t: $t } = useI18n({ useScope: 'global' })
     const store = useStore()
 
     const plotEl = ref(null)
@@ -34,7 +36,7 @@ export default {
         }
 
         if (t.name) {
-          trace.name = t.name
+          trace.name = $t(`general.${t.name}`)
         }
 
         if (type.value === '3d') {

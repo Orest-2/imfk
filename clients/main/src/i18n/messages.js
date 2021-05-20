@@ -12,6 +12,7 @@ export const messages = {
       evaluate: 'Evaluate',
       select_an_operation: 'Select an operation',
       result: 'Result',
+      function: 'Function',
       empty: 'Empty',
       number_of_data_sets: 'Number of data sets',
       number_of_arguments: 'Number of arguments',
@@ -23,6 +24,28 @@ export const messages = {
       difference: 'Difference',
       symmetrical_difference: 'Symmetrical difference',
       disjunctive_sum: 'Disjunctive sum'
+    },
+    membership_functions: {
+      trimf: 'Triangular membership function',
+      trapmf: 'Trapezoidal membership function',
+      szmf: 'Square Z-spline',
+      hzmf: 'Harmonic Z-spline',
+      zsigmf: 'Z-sigmoidal membership function',
+      zlinemf: 'Z-linear membership function',
+      ssmf: 'Square S-spline',
+      hsmf: 'Harmonic S-spline',
+      ssigmf: 'S-sigmoidal membership function',
+      slinemf: 'S-linear membership function',
+      gbellmf: 'Bell-like membership function',
+      gaussmf: 'Gaussian membership function',
+      conemf: 'Cone-like membership function',
+      pyrammf: 'Pyramid membership function',
+      trappyrammf: 'Trapezoidal-pyramidal membership function',
+      gsigmf: 'Generalized sigmoidal membership function',
+      gbell3dmf: 'Bell-like membership function',
+      gauss3dmf: 'Gaussian membership function',
+      hyperbolmf: 'Hyperboloid membership function',
+      ellipsmf: 'Ellipsoid membership function'
     }
   },
   ua: {
@@ -38,6 +61,7 @@ export const messages = {
       evaluate: 'Виконати',
       select_an_operation: 'Виберіть операцію',
       result: 'Результат',
+      function: 'Функція',
       empty: 'Нічого не вибрано',
       number_of_data_sets: 'Кількість наборів даних',
       number_of_arguments: 'Кількість аргументів',
@@ -49,6 +73,28 @@ export const messages = {
       difference: 'Різниця',
       symmetrical_difference: 'Симетрична різниця',
       disjunctive_sum: 'Диз\'юнктивна сума'
+    },
+    membership_functions: {
+      trimf: 'Трикутна функції належності',
+      trapmf: 'Трапециідальна функція належності',
+      szmf: 'Квадратичний Z-сплайн',
+      hzmf: 'Гармонійний Z-сплайн',
+      zsigmf: 'Z-сигмоїдальна функція належності',
+      zlinemf: 'Z-лінійна функція належності',
+      ssmf: 'Квадратичний S-сплайн',
+      hsmf: 'Гармонійний S-сплайн',
+      ssigmf: 'S-сигмоїдальна функція належності',
+      slinemf: 'S-лінійна функція належності',
+      gbellmf: 'Дзвоноподібна функція належності',
+      gaussmf: 'Гаусова функція належності',
+      conemf: 'Конусоподібна функція належності',
+      pyrammf: 'Пірамідальна функція належності',
+      trappyrammf: 'Трапецієподібно-пірамідальна функція належності',
+      gsigmf: 'Узагальнена сигмоїдальна функція належності',
+      gbell3dmf: 'Дзвоноподібна функція належності',
+      gauss3dmf: 'Гаусова функція належності',
+      hyperbolmf: 'Гіперболоїдна функція належності',
+      ellipsmf: 'Еліпсоїдна функція належності'
     }
   }
 }

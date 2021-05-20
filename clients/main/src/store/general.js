@@ -170,7 +170,7 @@ export const general = {
           const v = data.data.map((el, i) => ({
             x: el.x,
             y: el.y,
-            name: el.membership_func_id ? `функця ${i + 1}` : 'результат',
+            name: el.membership_func_id ? 'function' : 'result',
             color: el.membership_func_id ? 'blue' : 'red',
             dash: el.membership_func_id ? 'dot' : 'solid'
           }))
