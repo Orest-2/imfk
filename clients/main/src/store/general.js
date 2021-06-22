@@ -80,7 +80,7 @@ export const general = {
       state.selectedMfs[state.type][k].mf = v
 
       if (defaultParams[v?.code]) {
-        state.selectedMfs[state.type][k].funcParams = defaultParams[v.code]
+        state.selectedMfs[state.type][k].funcParams = dc(defaultParams[v.code])
       } else {
         state.selectedMfs[state.type][k].funcParams = Array(v?.params_count).fill(0)
       }
@@ -94,7 +94,7 @@ export const general = {
       }
 
       if (defaultParams[v?.code]) {
-        state.selectedMfs[state.type][k].operands[i].funcParams = defaultParams[v.code]
+        state.selectedMfs[state.type][k].operands[i].funcParams = dc(defaultParams[v.code])
       } else {
         state.selectedMfs[state.type][k].operands[i].funcParams = Array(v?.params_count).fill(0)
       }
