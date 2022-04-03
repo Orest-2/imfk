@@ -1,3 +1,5 @@
+// +heroku goVersion go1.16
+
 module github.com/Orest-2/imfk
 
 go 1.16
