@@ -3,6 +3,7 @@ package main
 import (
 	"mime"
 	"net/http"
+	"os"
 
 	"github.com/Orest-2/imfk/controllers"
 	mfsController "github.com/Orest-2/imfk/controllers/mfs"
@@ -30,6 +31,12 @@ func CORS(c *gin.Context) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "1447"
+	}
+
 	r := gin.Default()
 
 	models.ConnectDataBase()
@@ -54,5 +61,5 @@ func main() {
 
 	mime.AddExtensionType(".js", "text/javascript")
 
-	r.Run(":1447")
+	r.Run(":" + port)
 }
