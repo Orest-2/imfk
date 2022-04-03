@@ -36,7 +36,7 @@ func main() {
 	mocks.Init()
 
 	r.Use(CORS)
-	r.Use(static.Serve("/", static.LocalFile("./dist", true)))
+	r.Use(static.Serve("/", static.LocalFile("./clients/main/dist", true)))
 
 	v1 := r.Group("api/v1")
 	{
