@@ -16,6 +16,9 @@
             <option value="ua">
               UA
             </option>
+            <option value="hu">
+              HU
+            </option>
           </select>
         </div>
       </div>
