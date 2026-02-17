@@ -3,4 +3,5 @@
     "clients/main/"
   ],
   "css.styleSheets": [],
+  "git.ignoreLimitWarning": true,
 }
