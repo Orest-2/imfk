@@ -1,1 +1,4 @@
 # /imfk.db
+.omc/
+node_modules/
+dist-types/

@@ -1,2 +1,7 @@
 node_modules
 npm-debug.log
+worker/
+wrangler.jsonc
+tsconfig.json
+worker-configuration.d.ts
+.omc

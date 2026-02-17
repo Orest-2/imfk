@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"allowJs": true,
+		"checkJs": false,
+		"outDir": "./dist-types"
+	},
+	"include": ["src/**/*"]
+}

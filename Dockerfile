@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 RUN go build -tags=jsoniter -o ./app ./main.go
 
-FROM node:lts-alpine as client-build-stage
+FROM node:16-alpine AS client-build-stage
 
 WORKDIR /app
 
@@ -32,7 +32,7 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN mkdir -p /app
 WORKDIR /app
 COPY --from=builder /app .
-COPY --from=client-build-stage /app/dist ./dist
+COPY --from=client-build-stage /app/dist ./clients/main/dist
 
 EXPOSE 1447
 

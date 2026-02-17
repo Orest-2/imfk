@@ -1,0 +1,20 @@
+{
+	"name": "imfk",
+	"version": "1.0.0",
+	"private": true,
+	"workspaces": [
+		"clients/main"
+	],
+	"scripts": {
+		"postinstall": "wrangler types",
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev"
+	},
+	"dependencies": {
+		"@cloudflare/containers": "^0.0.13"
+	},
+	"devDependencies": {
+		"typescript": "^5.5.2",
+		"wrangler": "^4.22.0"
+	}
+}
